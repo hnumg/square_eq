@@ -1,6 +1,5 @@
 #include"test.h"
 //#include"complex.h"
-#include"main.h"
 #include"square_eq_solver.h"
 
 
@@ -71,21 +70,20 @@ u64 OneAutotestSolveSqEq(){
     _rdrand_q(&c.b);
     _rdrand_q(&c.c);
 
-    Complex root1, root2;
-    ComplexInit(&root1);
-    ComplexInit(&root2);
+    Roots roots;
+    RootsInit(&roots);
 
-    long long res = SolveSqEq(c, &root1, &root2);
+    SolveSqEq(c, &roots);
     if (DoubleIsNaN(c.a) || DoubleIsNaN(c.b) || DoubleIsNaN(c.c)){
-        if (!(DoubleIsNaN(root1.imaginary) && DoubleIsNaN(root1.real) &&
-              DoubleIsNaN(root2.imaginary) && DoubleIsNaN(root2.real))){
+        if (!(DoubleIsNaN(roots.Root1.imaginary) && DoubleIsNaN(roots.Root1.real) &&
+              DoubleIsNaN(roots.Root2.imaginary) && DoubleIsNaN(roots.Root2.real))){
 
             fprintf(stderr, "NaNs err");
             return 1;
         }
     }
     else if (DoubleIsZero(c.a) && DoubleIsZero(c.b) && !DoubleIsZero(c.c)){
-        if (res != 0){
+        if (roots.roots_count != 0){
             fprintf(stderr, "NZER");
             return 1;
         }
@@ -94,8 +92,8 @@ u64 OneAutotestSolveSqEq(){
         //printf("fake");
         //return 1;
     }*/
-    else if (res == 1){
-        return RootIsIncorrect(c, root1);
+    else if (roots.roots_count == 1){
+        return RootIsIncorrect(c, roots.Root1);
         /*Complex c1;//res
         Complex c2;
         MulComplexToReal(root1, c.b, &c2);
@@ -114,10 +112,10 @@ u64 OneAutotestSolveSqEq(){
             return 0;
         }*/
     }
-    else if (res == 0){ fprintf(stderr, "ZER"); return 1; }
-    else if (res>2 && !(DoubleIsZero(c.a) && DoubleIsZero(c.b) && DoubleIsZero(c.c))){ printf("MORETHAN2"); return 1; }
+    else if (roots.roots_count == 0){ fprintf(stderr, "ZER"); return 1; }
+    else if (roots.roots_count>2 && !(DoubleIsZero(c.a) && DoubleIsZero(c.b) && DoubleIsZero(c.c))){ printf("MORETHAN2"); return 1; }
     else{
-        return rootsAreIncorrect(c, root1, root2);
+        return rootsAreIncorrect(c, roots.Root1, roots.Root2);
     }
     return 0;
 
@@ -125,11 +123,39 @@ u64 OneAutotestSolveSqEq(){
 
 }
 
+/*
+u64 ManualTest(TestType ct){
+    Roots roots;
+    SolveSqEq(ct.cs, &roots);
+    if (!RootsObjectsIsEqual(ct.roots, roots)){
+        printf("Test failed: a=%lg, b=%lg, c=%lg,\nExpected roots_count=%lld, root1=",
+               ct.cs.a, ct.cs.b, ct.cs.c, ct.roots.roots_count);
+        PrintComplex(ct.roots.Root1);
+        printf(", root2=");
+        PrintComplex(ct.roots.Root2);
+        printf(", but got roots_count=%lld", roots.roots_count);
+        PrintComplex(roots.Root1);
+        printf(", root2=");
+        PrintComplex(roots.Root2);
+        printf('\n');
+        return 1;
+    }
+    return 0;
+}
 
+
+u64 ManualTests(){
+    TestType test_list[] =
+}*/
+
+//TODO: manual tests from file
+
+
+const u64 TEST_COUNT = 0xFFFF;
 
 u64 TestSolveSqEq(){
     u64 errs_cnt = 0;
-    for (u64 i = 0; i < 0xFFFF; i++){
+    for (u64 i = 0; i < TEST_COUNT; i++){
         errs_cnt += OneAutotestSolveSqEq();
     }
     return errs_cnt;

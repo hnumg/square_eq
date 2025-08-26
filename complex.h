@@ -15,7 +15,7 @@ typedef struct {
 
 
 
-inline static int DoubleIsZero(double n){
+inline static u64 DoubleIsZero(double n){
     union {double d; u64 i;} var = {.d = n};
     var.d = n;
     var.i &= 0x7FFFFFFFFFFFFFFF;
@@ -33,21 +33,26 @@ inline static fp64 DoubleAbs(fp64 n){
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wfloat-equal"
-inline static int DoubleIsNaN(double n){
+inline static u64 DoubleIsNaN(double n){
     return n != n;
 }
 #pragma GCC diagnostic pop
 
 
-inline static int DoubleIsInf(double n){
+inline static u64 DoubleIsInf(double n){
     union {double d; u64 i;} var = {.d = n};
 
     return (var.i | 0x8000000000000000) == 0xFFF0000000000000;
 }
 
 
+inline static u64 DoubleIsEqual(fp64 n, fp64 m){
+    fp64 divisor = DoubleIsZero(n+m)?1:n+m;
+    return DoubleIsZero((n-m)/divisor);
+}
 
-long long ComplexInit(Complex* obj);
+
+void ComplexInit(Complex* self, fp64 real=.0, fp64 imaginary=.0);
 
 void MulComplexToReal(Complex c, fp64 n, Complex *res);
 
@@ -57,18 +62,21 @@ void AddComplexToComplex(Complex c, Complex n, Complex *res);
 
 void AddComplexToReal(Complex c, fp64 n, Complex *res);
 
-int ComplexIsNaN(Complex n);
+bool ComplexIsNaN(Complex n);
 
-int ComplexIsZero(Complex n);
+bool ComplexIsZero(Complex n);
 
-int ComplexIsInf(Complex n);
+bool ComplexIsInf(Complex n);
+
+bool ComplexIsEqual(Complex n, Complex m);
+
 /*
 int print_arginfo(const printf_info* _, size_t __, int* ___);
 
 int Complex_handler(FILE *stream, const struct printf_info *info, const void *const *args);
 */
-int fPrintComplex(FILE *stream, Complex arg);
+void fPrintComplex(FILE *stream, Complex arg);
 
-int PrintComplex(Complex arg);
+void PrintComplex(Complex arg);
 
 #endif

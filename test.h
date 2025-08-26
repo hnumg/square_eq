@@ -1,8 +1,12 @@
 #include"complex.h"
-#include"main.h"
-
+#include"square_eq_solver.h"
 
 void _rdrand_q(void *ptr);
+
+typedef struct{
+    Coefs cs;
+    Roots roots;
+} TestType;
 
 u64 CheckSpecialComplexZero(Complex res, Coefs c);
 

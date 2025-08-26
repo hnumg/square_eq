@@ -3,10 +3,9 @@
 #include<stdio.h>
 #include "complex.h"
 
-long long ComplexInit(Complex* obj){
-    obj->real = .0;
-    obj->imaginary = .0;
-    return 0;
+void ComplexInit(Complex* self, fp64 real/*=.0*/, fp64 imaginary/*=.0*/){
+    self->real = real;
+    self->imaginary = imaginary;
 }
 
 
@@ -30,18 +29,21 @@ void AddComplexToReal(Complex c, fp64 n, Complex *res){
     res->imaginary = c.imaginary;
 }
 
-int ComplexIsNaN(Complex n){
+bool ComplexIsNaN(Complex n){
     return DoubleIsNaN(n.imaginary) || DoubleIsNaN(n.real);
 }
 
-int ComplexIsZero(Complex n){
+bool ComplexIsZero(Complex n){
     return DoubleIsZero(n.imaginary) && DoubleIsZero(n.real);
 }
 
-int ComplexIsInf(Complex n){
+bool ComplexIsInf(Complex n){
     return !ComplexIsNaN(n) && (DoubleIsInf(n.imaginary) || DoubleIsInf(n.real));
 }
 
+bool ComplexIsEqual(Complex n, Complex m){
+    return DoubleIsEqual(n.imaginary, m.imaginary)&&DoubleIsEqual(n.real, m.real);
+}
 
 /*
 int print_arginfo(const printf_info* _, size_t __, int* ___){
@@ -72,7 +74,7 @@ int Complex_handler(FILE *stream, const struct printf_info *info, const void *co
 }
 */
 
-int fPrintComplex(FILE *stream, Complex arg){
+void fPrintComplex(FILE *stream, Complex arg){
     double real = arg.real;
     double imaginary = arg.imaginary;
 
@@ -88,9 +90,8 @@ int fPrintComplex(FILE *stream, Complex arg){
     else {
         fprintf(stream, "%lg%+lgj", real, imaginary);
     }
-    return 0;
 }
 
-int PrintComplex(Complex c){
-    return fPrintComplex(stdout, c);
+void PrintComplex(Complex c){
+    fPrintComplex(stdout, c);
 }
