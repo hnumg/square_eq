@@ -52,7 +52,7 @@ long long SolveSqEq(Coefs Cs,
             return 2;
         }
     }
-    fprintf(stderr, "error in function SolveSqEq: undefined return");
+    Exception("ValueError", "undefined returned value!");
     abort();
 
 }

@@ -1,6 +1,6 @@
 #include"test.h"
 //#include"complex.h"
-//#include"main.h"
+#include"main.h"
 #include"square_eq_solver.h"
 
 
@@ -80,13 +80,13 @@ u64 OneAutotestSolveSqEq(){
         if (!(DoubleIsNaN(root1.imaginary)&&DoubleIsNaN(root1.real)&&
               DoubleIsNaN(root2.imaginary)&&DoubleIsNaN(root2.real))){
 
-            printf("NaNs err");
+            fprintf(stderr, "NaNs err");
             return 1;
         }
     }
     else if (DoubleIsZero(c.a)&&DoubleIsZero(c.b)&&!DoubleIsZero(c.c)){
         if (res!=0){
-            printf("NZER");
+            fprintf(stderr, "NZER");
             return 1;
         }
     }
@@ -114,7 +114,7 @@ u64 OneAutotestSolveSqEq(){
             return 0;
         }*/
     }
-    else if (res==0){printf("ZER");return 1;}
+    else if (res==0){fprintf(stderr, "ZER");return 1;}
     else if (res>2&&!(DoubleIsZero(c.a)&&DoubleIsZero(c.b)&&DoubleIsZero(c.c))){printf("MORETHAN2");return 1;}
     else{
         return rootsAreIncorrect(c, root1, root2);
@@ -129,7 +129,7 @@ u64 OneAutotestSolveSqEq(){
 
 u64 TestSolveSqEq(){
     u64 errs_cnt = 0;
-    for (u64 i=0; i<0xFFFFFF; i++){
+    for (u64 i=0; i<0xFFFF; i++){
         errs_cnt+=OneAutotestSolveSqEq();
     }
     return errs_cnt;
