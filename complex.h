@@ -17,16 +17,16 @@ typedef struct {
 
 inline static int DoubleIsZero(double n){
     union {double d; u64 i;} var = {.d = n};
-    var.d=n;
-    var.i&=0x7FFFFFFFFFFFFFFF;
-    return var.d<1e-10;
+    var.d = n;
+    var.i &= 0x7FFFFFFFFFFFFFFF;
+    return var.d < 1e-10;
 }
 
 
 inline static fp64 DoubleAbs(fp64 n){
     union {fp64 f; u64 i;} var = {.f = n};
-    var.f=n;
-    var.i&=0x7FFFFFFFFFFFFFFF;
+    var.f = n;
+    var.i &= 0x7FFFFFFFFFFFFFFF;
     return var.f;
 }
 
@@ -34,7 +34,7 @@ inline static fp64 DoubleAbs(fp64 n){
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wfloat-equal"
 inline static int DoubleIsNaN(double n){
-    return n!=n;
+    return n != n;
 }
 #pragma GCC diagnostic pop
 
@@ -42,7 +42,7 @@ inline static int DoubleIsNaN(double n){
 inline static int DoubleIsInf(double n){
     union {double d; u64 i;} var = {.d = n};
 
-    return (var.i|0x8000000000000000)==0xFFF0000000000000;
+    return (var.i | 0x8000000000000000) == 0xFFF0000000000000;
 }
 
 

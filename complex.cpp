@@ -11,35 +11,35 @@ long long ComplexInit(Complex* obj){
 
 
 void MulComplexToReal(Complex c, fp64 n, Complex *res){
-    res->real = n*c.real;
-    res->imaginary = n*c.imaginary;
+    res->real = n * c.real;
+    res->imaginary = n * c.imaginary;
 }
 
 void MulComplexToComplex(Complex c, Complex n, Complex *res){
-    res->real = n.real*c.real-n.imaginary*c.imaginary;
-    res->imaginary = n.real*c.imaginary+n.imaginary*c.real;
+    res->real = n.real * c.real - n.imaginary * c.imaginary;
+    res->imaginary = n.real * c.imaginary + n.imaginary * c.real;
 }
 
 void AddComplexToComplex(Complex c, Complex n, Complex *res){
-    res->imaginary=c.imaginary+n.imaginary;
-    res->real=c.real+n.real;
+    res->imaginary = c.imaginary + n.imaginary;
+    res->real = c.real + n.real;
 }
 
 void AddComplexToReal(Complex c, fp64 n, Complex *res){
-    res->real=c.real+n;
+    res->real = c.real + n;
     res->imaginary = c.imaginary;
 }
 
 int ComplexIsNaN(Complex n){
-    return DoubleIsNaN(n.imaginary)||DoubleIsNaN(n.real);
+    return DoubleIsNaN(n.imaginary) || DoubleIsNaN(n.real);
 }
 
 int ComplexIsZero(Complex n){
-    return DoubleIsZero(n.imaginary)&&DoubleIsZero(n.real);
+    return DoubleIsZero(n.imaginary) && DoubleIsZero(n.real);
 }
 
 int ComplexIsInf(Complex n){
-    return !ComplexIsNaN(n)&&(DoubleIsInf(n.imaginary)||DoubleIsInf(n.real));
+    return !ComplexIsNaN(n) && (DoubleIsInf(n.imaginary) || DoubleIsInf(n.real));
 }
 
 
@@ -76,7 +76,7 @@ int fPrintComplex(FILE *stream, Complex arg){
     double real = arg.real;
     double imaginary = arg.imaginary;
 
-    if (DoubleIsZero(real)&&DoubleIsZero(imaginary)){
+    if (DoubleIsZero(real) && DoubleIsZero(imaginary)){
         fprintf(stream, "0");
     }
     else if(DoubleIsZero(imaginary)){
@@ -87,7 +87,6 @@ int fPrintComplex(FILE *stream, Complex arg){
     }
     else {
         fprintf(stream, "%lg%+lgj", real, imaginary);
-
     }
     return 0;
 }
