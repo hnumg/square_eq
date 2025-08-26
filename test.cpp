@@ -44,7 +44,7 @@ u64 RootIsIncorrect(Coefs c, Complex root){
     MulComplexToReal(c1, c.a, &c2);
     MulComplexToReal(root, c.b, &c1);
     AddComplexToComplex(c1, c2, &c3);
-    AddComplexToreal(c3, c.c, &c1);
+    AddComplexToReal(c3, c.c, &c1);
     if ((!CheckSpecialComplexZero(c1, c))&&!(ComplexIsNaN(c1)||ComplexIsInf(c1))){
         printf("ptr1=%p, ptr2=%p\n", &root, &c1);
         printf("a=%lg,b=%lg,c=%lg;\nr1=", c.a, c.b, c.c);
@@ -99,7 +99,7 @@ u64 OneAutotestSolveSqEq(){
         /*Complex c1;//res
         Complex c2;
         MulComplexToReal(root1, c.b, &c2);
-        AddComplexToreal(c2, c.c, &c1);
+        AddComplexToReal(c2, c.c, &c1);
         //res = c.b*root1+c.c
         if ((!CheckSpecialComplexZero(c1, c))&&!(ComplexIsNaN(c1)||ComplexIsInf(c1))){
             printf("ptr1=%p, ptr2=%p\n", &root1, &c1);

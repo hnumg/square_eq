@@ -55,7 +55,7 @@ void MulComplexToComplex(Complex c, Complex n, Complex *res);
 
 void AddComplexToComplex(Complex c, Complex n, Complex *res);
 
-void AddComplexToreal(Complex c, fp64 n, Complex *res);
+void AddComplexToReal(Complex c, fp64 n, Complex *res);
 
 int ComplexIsNaN(Complex n);
 

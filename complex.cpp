@@ -25,8 +25,9 @@ void AddComplexToComplex(Complex c, Complex n, Complex *res){
     res->real=c.real+n.real;
 }
 
-void AddComplexToreal(Complex c, fp64 n, Complex *res){
+void AddComplexToReal(Complex c, fp64 n, Complex *res){
     res->real=c.real+n;
+    res->imaginary = c.imaginary;
 }
 
 int ComplexIsNaN(Complex n){
