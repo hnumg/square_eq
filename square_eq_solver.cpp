@@ -23,16 +23,36 @@ long long CoefsInit(Coefs* self){
 
 
 
-void RootsInit(Roots* self){
-    self->roots_count = 0;
-    ComplexInit(&self->Root1);
-    ComplexInit(&self->Root2);
+void RootsInit(Roots* self, u64 roots_count,
+               fp64 root1real, fp64 root1imaginary,
+               fp64 root2real, fp64 root2imaginary){
+    self->roots_count = roots_count;
+    ComplexInit(&self->Root1, root1real, root1imaginary);
+    ComplexInit(&self->Root2, root2real, root2imaginary);
 }
 
 u64 RootsObjectsIsEqual(Roots self, Roots other){
     return self.roots_count == other.roots_count &&
            ComplexIsEqual(self.Root1, other.Root1) && ComplexIsEqual(self.Root2, other.Root2);
 }
+
+
+void RootsUnsigningNulls(Roots* r){
+    if (DoubleIsZero(r->Root1.real)){
+        r->Root1.real = 0;
+    }
+    if (DoubleIsZero(r->Root1.imaginary)){
+        r->Root1.imaginary = 0;
+    }
+    if (DoubleIsZero(r->Root2.real)){
+        r->Root2.real = 0;
+    }
+    if (DoubleIsZero(r->Root2.imaginary)){
+        r->Root2.imaginary = 0;
+    }
+}
+
+
 
 void RootsPrint(Roots r){
     printf("\nВедутся раскопки корней квадратного уравнения...");
@@ -87,7 +107,7 @@ u64 CoefsInput(Coefs *Cs){
     return 0;
 }
 
-void SolveSqEq(Coefs Cs, Roots* r){
+void _SolveSqEq(Coefs Cs, Roots* r){
     double a = Cs.a, b = Cs.b, c = Cs.c;
 
     if (DoubleIsNaN(a) || DoubleIsNaN(b) || DoubleIsNaN(c)){
@@ -102,10 +122,14 @@ void SolveSqEq(Coefs Cs, Roots* r){
         if (DoubleIsZero(b)){
             if (!DoubleIsZero(c)){
                  r->roots_count = 0;
+                 ComplexInit(&r->Root1, .0, .0);
+                 ComplexInit(&r->Root2, .0, .0);
                  return;
             }
             else{
                 r->roots_count = INF_ROOTS;
+                 ComplexInit(&r->Root1, .0, .0);
+                 ComplexInit(&r->Root2, .0, .0);
                 return;
             }
         }
@@ -154,3 +178,8 @@ void SolveSqEq(Coefs Cs, Roots* r){
     abort();
 
 }
+
+void SolveSqEq(Coefs Cs, Roots* r){
+    _SolveSqEq(Cs, r);
+    RootsUnsigningNulls(r);
+};

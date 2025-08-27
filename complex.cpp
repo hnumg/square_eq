@@ -42,7 +42,14 @@ bool ComplexIsInf(Complex n){
 }
 
 bool ComplexIsEqual(Complex n, Complex m){
-    return DoubleIsEqual(n.imaginary, m.imaginary)&&DoubleIsEqual(n.real, m.real);
+    return (DoubleIsEqual(n.imaginary, m.imaginary) && DoubleIsEqual(n.real, m.real)) ||
+           (ComplexIsNaN(n) && ComplexIsNaN(m)) || (ComplexIsInf(n) && ComplexIsInf(m));
+}
+
+bool ComplexIsLittle(Complex n){
+    return ((DoubleIsLittle(n.real) && !DoubleIsZero(n.real)) ||
+            (DoubleIsLittle(n.imaginary) && !DoubleIsZero(n.imaginary))) ||
+            ComplexIsZero(n);
 }
 
 /*

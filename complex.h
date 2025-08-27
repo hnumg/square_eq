@@ -19,8 +19,23 @@ inline static u64 DoubleIsZero(double n){
     union {double d; u64 i;} var = {.d = n};
     var.d = n;
     var.i &= 0x7FFFFFFFFFFFFFFF;
-    return var.d < 1e-10;
+    return var.d < 1e-100;
 }
+
+inline static u64 DoubleIsLittle(double n){
+    union {double d; u64 i;} var = {.d = n};
+    var.d = n;
+    var.i &= 0x7FFFFFFFFFFFFFFF;
+    return var.d < 1e-10;//что тут? e-10?
+}
+
+/*
+inline static u64 DoubleIsLittle2(double n){
+    union {double d; u64 i;} var = {.d = n};
+    var.d = n;
+    var.i &= 0x7FFFFFFFFFFFFFFF;
+    return var.d < 1e-20;
+}*/
 
 
 inline static fp64 DoubleAbs(fp64 n){
@@ -69,6 +84,8 @@ bool ComplexIsZero(Complex n);
 bool ComplexIsInf(Complex n);
 
 bool ComplexIsEqual(Complex n, Complex m);
+
+bool ComplexIsLittle(Complex n);
 
 /*
 int print_arginfo(const printf_info* _, size_t __, int* ___);

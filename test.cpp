@@ -21,6 +21,7 @@ u64 CheckSpecialComplexZero(Complex res, Coefs c){
     fp64 sqa = a * a;
     fp64 sqb = b * b;
     fp64 adb = a / b;
+    fp64 d = adb<1/adb?adb:1/adb;
     sqa = sqa < 1.0/sqa ? sqa : 1.0/sqa;
     sqb = sqb < 1.0/sqb ? sqb : 1.0/sqb;
     adb = adb < 1.0/adb ? adb : 1.0/adb;
@@ -32,8 +33,28 @@ u64 CheckSpecialComplexZero(Complex res, Coefs c){
     res.real *= sqa;
     //printf("res.i=%lg\n", res.imaginary);
     //printf("res.r=%lg\n", res.real);
-    return ComplexIsZero(res) || ComplexIsNaN(res) || ComplexIsInf(res) || DoubleIsZero(sqa) || DoubleIsNaN(sqa);
+    return ComplexIsLittle(res) || ComplexIsNaN(res) || ComplexIsInf(res) || DoubleIsZero(sqa) || DoubleIsNaN(sqa)||DoubleIsLittle(d);
 }
+
+u64 OneRootIsIncorrect(Coefs c, Complex root){
+    Complex c1;
+    Complex c2;
+    MulComplexToReal(root, c.b, &c2);
+    AddComplexToReal(c2, c.c, &c1);
+    if ((!CheckSpecialComplexZero(c1, c)) && !(ComplexIsNaN(c1) || ComplexIsInf(c1))){
+        printf("ptr1=%p, ptr2=%p\n", &root, &c1);
+        printf("a=%lg,b=%lg,c=%lg;\nr1=", c.a, c.b, c.c);
+        PrintComplex(root);
+        printf(";r1ref=");
+        PrintComplex(c1);
+        printf("\n");
+        return 1;
+    }
+    else{
+        return 0;
+    }
+}
+
 
 u64 RootIsIncorrect(Coefs c, Complex root){
     Complex c1;
@@ -45,6 +66,7 @@ u64 RootIsIncorrect(Coefs c, Complex root){
     AddComplexToComplex(c1, c2, &c3);
     AddComplexToReal(c3, c.c, &c1);
     if ((!CheckSpecialComplexZero(c1, c)) && !(ComplexIsNaN(c1) || ComplexIsInf(c1))){
+        printf("2roots");
         printf("ptr1=%p, ptr2=%p\n", &root, &c1);
         printf("a=%lg,b=%lg,c=%lg;\nr1=", c.a, c.b, c.c);
         PrintComplex(root);
@@ -93,7 +115,7 @@ u64 OneAutotestSolveSqEq(){
         //return 1;
     }*/
     else if (roots.roots_count == 1){
-        return RootIsIncorrect(c, roots.Root1);
+        return OneRootIsIncorrect(c, roots.Root1);
         /*Complex c1;//res
         Complex c2;
         MulComplexToReal(root1, c.b, &c2);
@@ -123,30 +145,45 @@ u64 OneAutotestSolveSqEq(){
 
 }
 
-/*
+
 u64 ManualTest(TestType ct){
     Roots roots;
     SolveSqEq(ct.cs, &roots);
     if (!RootsObjectsIsEqual(ct.roots, roots)){
-        printf("Test failed: a=%lg, b=%lg, c=%lg,\nExpected roots_count=%lld, root1=",
+        printf("Test failed: a=%lg, b=%lg, c=%lg,\nExpected roots_count=%llu, root1=",
                ct.cs.a, ct.cs.b, ct.cs.c, ct.roots.roots_count);
         PrintComplex(ct.roots.Root1);
         printf(", root2=");
         PrintComplex(ct.roots.Root2);
-        printf(", but got roots_count=%lld", roots.roots_count);
+        printf(", but got roots_count=%llu, root1=", roots.roots_count);
         PrintComplex(roots.Root1);
         printf(", root2=");
         PrintComplex(roots.Root2);
-        printf('\n');
+        printf("\n");
         return 1;
     }
     return 0;
 }
 
+const u64 MANUAL_TESTS_COUNT = 8;
+
+
+
 
 u64 ManualTests(){
-    TestType test_list[] =
-}*/
+    TestType t;
+    FILE * f = fopen64("./manual_tests", "r");
+    u64 manual_tests_failed = 0;
+
+    for (u64 i=0; i<MANUAL_TESTS_COUNT;i++){
+        fscanf(f, "%lg %lg %lg %llu %lg %lg %lg %lg", &t.cs.a, &t.cs.b, &t.cs.c,
+               &t.roots.roots_count,
+               &t.roots.Root1.real, &t.roots.Root1.imaginary,
+               &t.roots.Root2.real, &t.roots.Root2.imaginary);
+        manual_tests_failed+=ManualTest(t);
+    }
+    return manual_tests_failed;
+}
 
 //TODO: manual tests from file
 
@@ -158,5 +195,6 @@ u64 TestSolveSqEq(){
     for (u64 i = 0; i < TEST_COUNT; i++){
         errs_cnt += OneAutotestSolveSqEq();
     }
+    ManualTests();
     return errs_cnt;
 }

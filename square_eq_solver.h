@@ -8,9 +8,7 @@ typedef double fp64;
 typedef void def;
 
 
-enum {
-    INF_ROOTS = 0x80000000
-};
+const u64 INF_ROOTS = 0xFFFFFFFFFFFFFFFF;
 
 
 typedef struct {
@@ -27,9 +25,13 @@ typedef struct {
 } Roots;
 
 
-void RootsInit(Roots* self);
+void RootsInit(Roots* self, u64 roots_count=0,
+               fp64 root1real=.0, fp64 root1imaginary=.0,
+               fp64 root2real=.0, fp64 root2imaginary=.0);
 
 u64 RootsObjectsIsEqual(Roots self, Roots other);
+
+void RootsUnsigningNulls(Roots* r);
 
 void RootsPrint(Roots r);
 
@@ -37,6 +39,8 @@ void RootsPrint(Roots r);
 long long CoefsInit(Coefs* self);
 
 u64 CoefsInput(Coefs *Cs);
+
+void _SolveSqEq(Coefs Cs, Roots* r);
 
 void SolveSqEq(Coefs Cs, Roots* r);
 
