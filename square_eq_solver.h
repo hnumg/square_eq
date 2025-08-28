@@ -1,5 +1,5 @@
-#ifndef SQUARE_EQ_SOLVER
-#define SQUARE_EQ_SOLVER
+#ifndef SQUARE_EQ_SOLVER_H
+#define SQUARE_EQ_SOLVER_H
 
 #include"complex.h"
 

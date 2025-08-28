@@ -115,7 +115,7 @@ void _SolveSqEq(Coefs Cs, Roots* r){
         ComplexInit(&r->Root1, nan, nan);
         ComplexInit(&r->Root2, nan, nan);
         //root1->imaginary = root1->real = root2->imaginary = root2->real = nan;
-        r->roots_count=2;
+        r->roots_count=0;
         return;
     }
     if (DoubleIsZero(a)){

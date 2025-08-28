@@ -98,7 +98,7 @@ u64 OneAutotestSolveSqEq(){
     SolveSqEq(c, &roots);
     if (DoubleIsNaN(c.a) || DoubleIsNaN(c.b) || DoubleIsNaN(c.c)){
         if (!(DoubleIsNaN(roots.Root1.imaginary) && DoubleIsNaN(roots.Root1.real) &&
-              DoubleIsNaN(roots.Root2.imaginary) && DoubleIsNaN(roots.Root2.real))){
+              DoubleIsNaN(roots.Root2.imaginary) && DoubleIsNaN(roots.Root2.real) && !roots.roots_count)){
 
             fprintf(stderr, "NaNs err");
             return 1;

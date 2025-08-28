@@ -1,3 +1,8 @@
+#ifndef EXCEPTION_H
+#define EXCEPTION_H
+
+
+
 #ifndef NDEBUG
 #define Exception(Exception_name, Message ) do {        \
     fprintf(stderr, "\033[31m    File <\"%s\">, line %d\n\n%s: %s \033[0m\n",  \
@@ -6,4 +11,6 @@
 } while (0)
 #else
 #define Exception(Exception_name, Message) do{}while(0)
+#endif
+
 #endif

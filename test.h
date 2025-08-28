@@ -1,3 +1,7 @@
+#ifndef TEST_H
+#define TEST_H
+
+
 #include"complex.h"
 #include"square_eq_solver.h"
 
@@ -23,3 +27,5 @@ u64 ManualTests();
 u64 OneAutotestSolveSqEq();
 
 u64 TestSolveSqEq();
+
+#endif

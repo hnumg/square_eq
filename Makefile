@@ -25,3 +25,6 @@ main : ${AllFiles}
 
 run: main
 	./main
+
+test: main
+	./main -t
